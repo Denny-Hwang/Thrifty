@@ -77,8 +77,8 @@ def print_stats(data):
 
 
 def print_rxtx_stats(splits):
-    for rxid, rx_data in splits.iteritems():
-        for txid, tx_detections in rx_data.iteritems():
+    for rxid, rx_data in splits.items():
+        for txid, tx_detections in rx_data.items():
             print("# Stats for RX #{}'s detections of "
                   "TX #{}'s transmissions:\n"
                   .format(rxid, txid))
@@ -112,13 +112,13 @@ def _plot_column(ax, detections, column, **kwargs):
 def _plot_per_rx(splits, func):
     fig = plt.figure()
     sharex = None
-    for idx, (rxid, rx_data) in enumerate(splits.iteritems()):
+    for idx, (rxid, rx_data) in enumerate(splits.items()):
         if sharex is not None:
             ax = fig.add_subplot(len(splits), 1, idx+1, sharex=sharex)
         else:
             ax = fig.add_subplot(len(splits), 1, idx+1)
             sharex = ax
-        for txid, tx_detections in rx_data.iteritems():
+        for txid, tx_detections in rx_data.items():
             func(ax, tx_detections, rxid, txid)
         ax.set_title('RX {}'.format(rxid))
         ax.legend()
@@ -139,8 +139,8 @@ def plot_rxtx_matrix(fig, splits, func):
     txids = list(np.unique(np.concatenate([tx.keys() for tx in splits.values()])))
     print(txids)
     shareax = None
-    for rxid, rx_data in splits.iteritems():
-        for txid, tx_detections in rx_data.iteritems():
+    for rxid, rx_data in splits.items():
+        for txid, tx_detections in rx_data.items():
             if len(tx_detections) == 0:
                 continue
             rxidx = rxids.index(rxid)
@@ -229,7 +229,7 @@ def plot_timestamp_residuals(detections):
     groups = split_by_column(detections, ['rxid'])
     num_rxids = len(groups)
     fig = plt.figure()
-    for i, (rxid, data) in enumerate(groups.iteritems()):
+    for i, (rxid, data) in enumerate(groups.items()):
         ax = fig.add_subplot(num_rxids, 1, i+1)
         coeffs = np.polyfit(data['soa'], data['timestamp'], 1)
         poly = np.poly1d(coeffs)

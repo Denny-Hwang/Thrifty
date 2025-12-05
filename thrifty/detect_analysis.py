@@ -667,11 +667,11 @@ def _main():
 
     plot_cmd_descriptions = ["  {:14s} {}".format(c, f.__doc__.split('\n')[0])
                              for c, f in
-                             sorted(_PLOT_COMMAND_STRINGS.iteritems())]
+                             sorted(_PLOT_COMMAND_STRINGS.items())]
 
     fig_cmd_descriptions = ["  {:14s} {}".format(c, f.__doc__.split('\n')[0])
                             for c, f in
-                            sorted(_FIGURE_COMMAND_STRINGS.iteritems())]
+                            sorted(_FIGURE_COMMAND_STRINGS.items())]
 
     description = "{}\n\nplot commands:\n{}\n\nfigure commands:\n{}".format(
                   __doc__,

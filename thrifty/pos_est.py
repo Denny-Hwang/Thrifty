@@ -30,8 +30,8 @@ class EstimationError(Exception):
 
 def solve_1d(tdoa_array, rx_pos):
     """Simple 1D position estimator for 2xRX."""
-    rx0 = rx_pos.keys()[0]
-    rx1 = rx_pos.keys()[1]
+    rx_keys = list(rx_pos.keys())
+    rx0, rx1 = rx_keys[0], rx_keys[1]
 
     assert len(rx_pos) == 2
     assert len(rx_pos[rx0]) == 1
@@ -58,12 +58,13 @@ def solve_numerically(tdoa_array, rx_pos):
     # TODO: experiment with different algorithms
     # TODO: use SNR or some confidence value as weight
 
-    dims = len(rx_pos[0])
+    first_rx = next(iter(rx_pos))
+    dims = len(rx_pos[first_rx])
     uniq_rx = np.unique(np.concatenate([tdoa_array['rx0'], tdoa_array['rx1']]))
     if len(uniq_rx) < dims + 1:
         raise EstimationError("Underdetermined")
 
-    rx_coords = np.array(rx_pos.values())
+    rx_coords = np.array(list(rx_pos.values()))
     min_bounds = np.amin(rx_coords, axis=0) - MAX_DIST
     max_bounds = np.amax(rx_coords, axis=0) + MAX_DIST
 
@@ -119,6 +120,7 @@ def dop_matrix(pos, rx_pos, rx_pairs):
 
 
 def dop(pos, rx_pos, rx_pairs):
+    rx_pairs = list(rx_pairs)
     matrix = dop_matrix(pos, rx_pos, rx_pairs)
     if matrix is None:
         return -1
@@ -128,7 +130,8 @@ def dop(pos, rx_pos, rx_pairs):
 def solve(tdoa_groups, rx_pos):
     # TODO: estimate confidence with SNR and DOP and return with pos
     num_rx = len(rx_pos)
-    dimensions = len(rx_pos[rx_pos.keys()[0]])
+    first_rx = next(iter(rx_pos))
+    dimensions = len(rx_pos[first_rx])
 
     results = []
     for group_id, timestamp, tx, tdoas in tdoa_groups:
