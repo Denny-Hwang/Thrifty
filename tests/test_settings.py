@@ -56,7 +56,7 @@ def test_load_default_values():
 
 def test_load_config():
     """Can load settings from config file."""
-    config = io.BytesIO("bar.baz:   1234.56")
+    config = io.StringIO("bar.baz:   1234.56")
     values = settings.load(None, config, DEFINITIONS)
     assert values['foo'] == float(DEFAULT_FOO)
     assert values['bar.baz'] == 1234.56
@@ -64,14 +64,14 @@ def test_load_config():
 
 def test_load_syntax_error():
     """Throw ConfigSyntaxError if config's syntax is invalid."""
-    config = io.BytesIO("foobar")
+    config = io.StringIO("foobar")
     with pytest.raises(settings.ConfigSyntaxError):
         settings.load(None, config, DEFINITIONS)
 
 
 def test_load_key_error_config():
     """Throw SettingKeyError if a setting in the config file is not defined."""
-    config = io.BytesIO("foobar: 1")
+    config = io.StringIO("foobar: 1")
     with pytest.raises(settings.SettingKeyError):
         settings.load(None, config, DEFINITIONS)
 
@@ -85,7 +85,7 @@ def test_load_key_error_arg():
 
 def test_load_args():
     """Can args override config and default."""
-    config = io.BytesIO("bar.baz:   12.34")
+    config = io.StringIO("bar.baz:   12.34")
     args = {'bar.baz': "7.8", 'foo': '9.0'}
     values = settings.load(args, config, DEFINITIONS)
     assert values['foo'] == 9.0

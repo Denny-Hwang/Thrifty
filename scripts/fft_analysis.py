@@ -33,7 +33,7 @@ def _main():
 
     blocks = block_reader(args.input, config.block_size, config.block_history)
 
-    fft_sum = np.zeros(config.block_size, dtype=np.float)
+    fft_sum = np.zeros(config.block_size, dtype=float)
     hist_sum = np.zeros(256)
 
     fft_freqs = np.fft.fftfreq(config.block_size, 1./config.block_size)
@@ -59,7 +59,7 @@ def _main():
             plt.tight_layout()
             plt.show()
 
-            fft_sum = np.zeros(config.block_size, dtype=np.float)
+            fft_sum = np.zeros(config.block_size, dtype=float)
             hist_sum = np.zeros(256)
             cnt = 0
 

@@ -42,7 +42,7 @@ def patch_module(module, **override):
 def detect_all(cards, settings, detector=DEFAULT_DETECTOR):
     """Detect positioning signal and estimate SOA."""
     toad = []
-    for rxid, card in cards.iteritems():
+    for rxid, card in cards.items():
         logging.info(" * Detect: RX #%d (%s)", rxid, card)
         blocks = card_reader(open(card, 'r'))
         det = detector(settings, blocks, rxid=rxid)
@@ -67,8 +67,8 @@ def postdetect(toad, settings,
 
     # Estimate TDOAs
     logging.info(" * TDOA estimate")
-    beacon_pos = {k: np.array(v) for k, v in settings.beacon_pos.iteritems()}
-    rx_pos = {k: np.array(v) for k, v in settings.rx_pos.iteritems()}
+    beacon_pos = {k: np.array(v) for k, v in settings.beacon_pos.items()}
+    rx_pos = {k: np.array(v) for k, v in settings.rx_pos.items()}
     tdoas, _ = tdoa_estimator(detections=toads,
                               matches=matches,
                               window_size=settings.tdoa_est_window,

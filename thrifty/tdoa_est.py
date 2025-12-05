@@ -51,7 +51,7 @@ def make_detection_extractor(detections, matches):
             rxpair_detections[(det0.rxid, det1.rxid)].append((det0, det1))
 
     timestamps = {}
-    for pair, detections in rxpair_detections.iteritems():
+    for pair, detections in rxpair_detections.items():
         detections.sort(cmp=lambda x, y: x[0].timestamp < y[0].timestamp)
         timestamps[pair] = [d[0].timestamp for d in detections]
 
@@ -348,7 +348,7 @@ def load_tdoa_groups(fname):
 def load_pos_config(file_):
     strings = parse_kvconfig(file_)
     txfreqs = {int(id_): np.array([float(x) for x in pos_str.split()])
-               for id_, pos_str in strings.iteritems()}
+               for id_, pos_str in strings.items()}
     return txfreqs
 
 

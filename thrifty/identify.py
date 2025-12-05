@@ -84,7 +84,7 @@ def auto_classify_transmitters(detections):
         detections_by_rx[detection.rxid].append(detection)
 
     edges = {}
-    for rxid, rx_detections in detections_by_rx.iteritems():
+    for rxid, rx_detections in detections_by_rx.items():
         freqs = np.array([d.carrier_info.bin for d in rx_detections])
         rx_edges = detect_transmitter_windows(freqs)
 
@@ -108,7 +108,7 @@ def classify_transmitters(detections, freqmap):
     for detection in detections:
         freq = detection.carrier_info.bin + detection.carrier_info.offset
         this_txid = -1  # unidentifier (FIXME: don't use magic number)
-        for txid, range_ in freqmap[detection.rxid].iteritems():
+        for txid, range_ in freqmap[detection.rxid].items():
             start, stop = range_
             if freq >= start and freq <= stop:
                 this_txid = txid
@@ -194,7 +194,7 @@ def load_freqmap(file_):
     tx_ranges = {}
     rx_offset = {}
 
-    for key, value in strings.iteritems():
+    for key, value in strings.items():
         if key[0] == '@':
             rx_offset[int(key[1:])] = float(value)
         else:
@@ -204,9 +204,9 @@ def load_freqmap(file_):
             # TODO: ensure that ranges do not overlap
 
     freq_map = {}
-    for rxid, offset in rx_offset.iteritems():
+    for rxid, offset in rx_offset.items():
         freq_map[rxid] = {}
-        for txid, range_ in tx_ranges.iteritems():
+        for txid, range_ in tx_ranges.items():
             start, stop = range_
             freq_map[rxid][txid] = (start+offset, stop+offset)
             print(rxid, txid, freq_map[rxid][txid])
