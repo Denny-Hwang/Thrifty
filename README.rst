@@ -6,37 +6,39 @@ SDR hardware such as the RTL-SDR.
 
 Requirements
 ------------
- - `Python <http://www.python.org/>`_ 2.7 or later
+ - `Python <http://www.python.org/>`_ 3.10+
  - `Numpy <http://www.numpy.org/>`_
- - [Optional] `matplotlib <http://matplotlib.org/>`_
+ - `SciPy <https://scipy.org/>`_
+ - [Optional] `matplotlib <http://matplotlib.org/>`_ for analysis helpers
 
 Installation
 ------------
-To install thrifty::
+Create an isolated environment and install Thrifty with pip::
 
-    $ sudo apt-get install python-pip
-    $ sudo pip install .
+    $ python3 -m venv .venv
+    $ source .venv/bin/activate
+    $ python -m pip install --upgrade pip
+    $ python -m pip install .
 
-or::
+For development (editable install with analysis extras)::
 
-    $ sudo python setup.py install
+    $ python -m pip install -e .[analysis]
 
-In addition to installing thrifty into the system's Python environment, this
-will also download and install the Python module requirements from `PyPI
-<http://pypi.python.org/>`_.
-
-To install thrifty in developer mode, which creates a symbolic link from the
-source location to the user's install location::
-
-    $ make dev
+In addition to installing Thrifty, this will download and install the Python
+module requirements from `PyPI <http://pypi.python.org/>`_.
 
 Thrifty requires ``fastcard`` to capture data. Refer to
 `fastcard/README.md <fastcard/README.md>`_ for installation instructions.
-Furthermore, refer to `fastdet/README.md <fastdet/README.md>`_ for more
-information regarding ``fastdet``, a fast replacement for ``thrifty detect``.
+Refer to `fastdet/README.md <fastdet/README.md>`_ for more information
+regarding ``fastdet``, a fast replacement for ``thrifty detect``.
+
+To run the test suite after installation::
+
+    $ python -m pip install -r requirements.txt
+    $ pytest -q
 
 Refer to `rpi/installation.md <rpi/installation.md>`_ for instructions on
-configuring an Raspberry Pi 3 for use as an inexpensive TDOA receiver.
+configuring a Raspberry Pi 3 for use as an inexpensive TDOA receiver.
 
 Usage
 -----
@@ -55,7 +57,7 @@ Typical CLI workflow::
 
     $ # On RX1:
     $ thrifty capture rx1.card
-    $ thrifty detect rx0.card -o rx1.toad
+    $ thrifty detect rx1.card -o rx1.toad
 
     $ # On server:
     $ thrifty identify rx0.toad rx1.toad
@@ -106,7 +108,8 @@ For advanced use cases, use the thrifty API from Python or IPython, e.g.:
 
 Publications
 ------------
-Thrifty forms part of the dissertation at https://hdl.handle.net/10394/25449. Please cite this dissertation when using Thrifty in your work:
+Thrifty forms part of the dissertation at https://hdl.handle.net/10394/25449.
+Please cite this dissertation when using Thrifty in your work:
 
 .. code-block:: bibtex
 
