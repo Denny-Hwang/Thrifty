@@ -39,8 +39,8 @@ def test_raw_to_complex_inverse():
 
 def test_block_reader():
     """Test block_reader size and history."""
-    stream = io.BytesIO("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b"
-                        "\x0c\x0d")
+    stream = io.BytesIO(b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b"
+                        b"\x0c\x0d")
     blocks = list(block_data.block_reader(stream, 3, 1))
 
     indices = [b[1] for b in blocks]
@@ -53,15 +53,15 @@ def test_block_reader():
     # since it does not fill an entire block_data.
 
     assert raw == expected_raw
-    assert indices == range(len(data))
+    assert indices == list(range(len(data)))
 
 
 def test_card_reader():
     """Basic test for card_reader"""
-    stream = io.BytesIO("# Some comments\n"
-                        "# more comments\n"
-                        "1000.5425 10 r0+Om5==\n"
-                        "1000.5442 20 aaaaaa==")
+    stream = io.BytesIO(b"# Some comments\n"
+                        b"# more comments\n"
+                        b"1000.5425 10 r0+Om5==\n"
+                        b"1000.5442 20 aaaaaa==")
     blocks = list(block_data.card_reader(stream))
     timestamps, indices, data = zip(*blocks)
     chars = [tuple(block_data.complex_to_raw(x)) for x in data]

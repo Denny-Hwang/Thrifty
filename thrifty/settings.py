@@ -207,7 +207,7 @@ def load(args=None, config_file=None, definitions=None):
 
     # Default values
     strings = {key: setting.default
-               for key, setting in definitions.iteritems()
+               for key, setting in definitions.items()
                if setting.default is not None}
 
     # Load config
@@ -226,7 +226,7 @@ def load(args=None, config_file=None, definitions=None):
         strings.update(args)
 
     # Parse
-    values = {k: definitions[k].parser(v) for k, v in strings.iteritems()}
+    values = {k: definitions[k].parser(v) for k, v in strings.items()}
 
     return values
 
@@ -294,12 +294,12 @@ def load_args(parser, keys, argv=None, definitions=None):
         logging.info("Loaded config file from %s", config_arg)
     args.pop(CONFIG_DEST)
 
-    key_args = {k: v for k, v in args.iteritems()
+    key_args = {k: v for k, v in args.items()
                 if k in keys and v is not None}
-    extra_args = {k: v for k, v in args.iteritems() if k not in keys}
+    extra_args = {k: v for k, v in args.items() if k not in keys}
 
     settings = load(key_args, config_file, definitions)
-    subset = {k: v for k, v in settings.iteritems() if k in keys}
+    subset = {k: v for k, v in settings.items() if k in keys}
 
     settings_obj = Namespace(subset)
     args_obj = Namespace(extra_args)

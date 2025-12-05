@@ -19,7 +19,7 @@ def _raw_reader(stream, chunk_size):
 
 def _raw_block_reader(stream, block_size):
     """Read fixed-sized blocks of samples."""
-    chunk = ""
+    chunk = b""
     for raw in _raw_reader(stream, block_size - len(chunk)):
         if len(raw) == 0:
             chunk = raw
@@ -32,7 +32,7 @@ def _raw_block_reader(stream, block_size):
         data = np.frombuffer(chunk, dtype=np.uint8)
 
         yield data
-        chunk = ""
+        chunk = b""
 
 
 def raw_to_complex(data):
@@ -121,11 +121,14 @@ def card_reader(stream):
         line = stream.readline()
         if len(line) == 0:
             break
+        if isinstance(line, bytes):
+            line = line.decode()
         if line[0] == '#' or line[0] == '\n':
             continue
         if line.startswith('Using Volk machine:') or line.startswith('linux;'):
             continue
         timestamp, idx, encoded = line.rstrip('\n').split(' ')
-        raw = np.fromstring(base64.b64decode(encoded), dtype='uint8')
+        raw_bytes = base64.b64decode(encoded)
+        raw = np.frombuffer(raw_bytes, dtype='uint8')
         data = raw_to_complex(raw)
         yield float(timestamp), int(idx), Signal(data)

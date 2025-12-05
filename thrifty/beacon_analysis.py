@@ -101,7 +101,7 @@ def analyze(detections, matches, deg=2):
         cut = detections[matches][left:right]
         coef, residuals = fit_poly_model(cut['soa'], deg)
         # outliers = stat_tools.is_outlier(residuals)
-        outliers = np.zeros(len(residuals), dtype=np.bool)
+        outliers = np.zeros(len(residuals), dtype=bool)
         filtered_cut = cut[~outliers]
 
         energy = filtered_cut['energy']
